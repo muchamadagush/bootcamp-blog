@@ -1,5 +1,6 @@
 const { Op } = require('sequelize')
 const { Users, Files } = require('../models')
+const BuildResponse = require('../helpers/BuildResponse')
 
 class UserController {
     async getAll(req, res) {
@@ -29,12 +30,9 @@ class UserController {
                 where: whereParams
             })
 
-            res.status(200).json({
-                code: 200,
-                message: `${users.length} data sudah diterima`,
-                count: total,
-                data: users
-            })
+            const buildResponse = BuildResponse.get({ data: users, count: total })
+
+            res.status(200).json(buildResponse)
         } catch (error) {
             res.status(500).json(error.message || 'Internal Server Error')
         }
