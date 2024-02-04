@@ -1,6 +1,7 @@
 const { Op } = require('sequelize')
 const { Users, Files } = require('../models')
 const BuildResponse = require('../helpers/BuildResponse')
+const { SendEmail } = require('../helpers/SendEmail')
 
 class UserController {
     async getAll(req, res) {
@@ -29,6 +30,8 @@ class UserController {
             const total = await Users.count({
                 where: whereParams
             })
+
+            SendEmail()
 
             const buildResponse = BuildResponse.get({ data: users, count: total })
 
